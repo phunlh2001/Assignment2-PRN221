@@ -8,6 +8,8 @@ namespace Assignment2.Models
     {
         [Column("Cat_ID")]
         [Key] public int ID { get; set; }
+
+        [StringLength(50)]
         [Column("Cat_Name")]
         public string Name { get; set; }
 
