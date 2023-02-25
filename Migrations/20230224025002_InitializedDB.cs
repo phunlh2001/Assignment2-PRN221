@@ -2,7 +2,7 @@
 
 namespace Assignment2.Migrations
 {
-    public partial class InitDB : Migration
+    public partial class InitializedDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,7 +12,7 @@ namespace Assignment2.Migrations
                 {
                     Cat_ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Cat_Name = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Cat_Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -25,10 +25,11 @@ namespace Assignment2.Migrations
                 {
                     pro_id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    pro_name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    pro_name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     pro_quantity = table.Column<int>(type: "int", nullable: false),
                     pro_price = table.Column<long>(type: "bigint", nullable: false),
-                    pro_description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    pro_description = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Likes = table.Column<int>(type: "int", nullable: false),
                     cat_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
