@@ -1,6 +1,8 @@
 ﻿@page
 @model Assignment2.Pages.Products.IndexModel
 
+@Html.AntiForgeryToken()
+
 @{
     ViewData["Title"] = "Product";
 }
@@ -31,6 +33,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Product[0].Category)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].Likes)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -53,6 +58,9 @@
                 @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Likes)
+            </td>
+            <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID" class="btn btn-success">
                     <i class="fa fa-pen"></i>    
                 </a>
@@ -62,21 +70,34 @@
                 <a asp-page="./Delete" asp-route-id="@item.ID" class="btn btn-danger">
                     <i class="fa fa-trash"></i>
                 </a>
-                <a class="btn btn-outline-primary" id="like">
-                    <i class="fa fa-thumbs-up"></i>
-                </a>
+                <button type="button" class="btn btn-primary" onclick="handleClick(@item.ID)">
+                    <i class="text-white fa fa-thumbs-up"></i>
+                </button>
             </td>
         </tr>
 }
     </tbody>
 </table>
 
-@section scripts {
+@section Scripts {
     <script>
-        $(function() {
-            $("#like").on("click", function() {
-
-            })
-        })
+        function handleClick(id) {
+            $.ajax({
+                type: "POST",
+                url: "/Products/Index?handler=ProcessData",
+                data: { id: id },
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                success: function(res) {
+                    console.log(res)
+                    $("body").load("/Products")
+                },
+                error: function(xhr, status, err) {
+                    console.log(status + ': ' + err);
+                }
+            });
+        }
     </script>
 }
