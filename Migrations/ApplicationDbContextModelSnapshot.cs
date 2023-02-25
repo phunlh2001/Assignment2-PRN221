@@ -71,9 +71,12 @@ namespace Assignment2.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasColumnName("pro_description");
 
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Likes")
                         .HasColumnType("int")
-                        .HasColumnName("Likes");
+                        .HasColumnName("likes");
 
                     b.Property<string>("Name")
                         .IsRequired()
