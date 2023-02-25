@@ -22,6 +22,8 @@ namespace Assignment2
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddRazorPages();
+
+            services.AddAntiforgery(o => o.HeaderName = "XSRF-TOKEN");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
