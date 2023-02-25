@@ -1,8 +1,12 @@
 ﻿using Assignment2.Models;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,14 +15,19 @@ namespace Assignment2.Pages.Products
     public class EditModel : PageModel
     {
         private readonly ApplicationDbContext _context;
+        [Obsolete]
+        private readonly IHostingEnvironment _environment;
 
-        public EditModel(ApplicationDbContext context)
+        [Obsolete]
+        public EditModel(ApplicationDbContext context, IHostingEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         [BindProperty]
         public Product Product { get; set; }
+        public IFormFile Upload { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -35,6 +44,7 @@ namespace Assignment2.Pages.Products
                 return NotFound();
             }
             ViewData["CateName"] = new SelectList(_context.Category, "ID", "Name");
+            ViewData["image"] = Product.ImageUrl;
             return Page();
         }
 
@@ -47,6 +57,10 @@ namespace Assignment2.Pages.Products
                 return Page();
             }
 
+            if (Upload != null)
+            {
+                await UploadFile(Upload);
+            }
             _context.Attach(Product).State = EntityState.Modified;
 
             try
@@ -71,6 +85,18 @@ namespace Assignment2.Pages.Products
         private bool ProductExists(int id)
         {
             return _context.Product.Any(e => e.ID == id);
+        }
+
+        private async Task UploadFile(IFormFile file)
+        {
+            string folder = "wwwroot/images/";
+            folder += file.FileName;
+            if (!System.IO.File.Exists(folder))
+            {
+                var filePath = Path.Combine(_environment.ContentRootPath, folder);
+                await Upload.CopyToAsync(new FileStream(filePath, FileMode.Create));
+            }
+            Product.ImageUrl = file.FileName;
         }
     }
 }

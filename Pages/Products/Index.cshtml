@@ -36,6 +36,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.Product[0].Likes)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Product[0].ImageUrl)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -60,7 +63,16 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Likes)
             </td>
-            <td>
+                @if (item.ImageUrl != null)
+                {
+                    <td>
+                        <img src="~/images/@item.ImageUrl" alt="image" style="width:36px;" class="ml-2" />
+                    </td>
+                } else
+                {
+                    <td></td>
+                }
+                <td>
                 <a asp-page="./Edit" asp-route-id="@item.ID" class="btn btn-success">
                     <i class="fa fa-pen"></i>    
                 </a>

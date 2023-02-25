@@ -27,6 +27,7 @@ namespace Assignment2.Pages.Products
             Product = await _context.Product
                 .Include(p => p.Category).FirstOrDefaultAsync(m => m.ID == id);
 
+            TempData["image"] = Product.ImageUrl;
             if (Product == null)
             {
                 return NotFound();

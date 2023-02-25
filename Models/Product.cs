@@ -28,8 +28,12 @@ namespace Assignment2.Models
         [StringLength(50, ErrorMessage = "Description cannot greater than 50 words")]
         public string Description { get; set; }
 
-        [Column("Likes")]
+        [Column("likes")]
         public int Likes { get; set; } = 0;
+
+        [DataType(DataType.ImageUrl)]
+        public string ImageUrl { get; set; }
+
 
         [Column("cat_id")]
         public int CateID { get; set; }
