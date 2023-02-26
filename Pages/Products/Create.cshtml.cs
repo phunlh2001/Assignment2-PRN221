@@ -46,7 +46,6 @@ namespace Assignment2.Pages.Products
 
             if (Upload != null)
             {
-
                 folder += Upload.FileName;
                 var filePath = Path.Combine(_environment.ContentRootPath, folder);
                 await Upload.CopyToAsync(new FileStream(filePath, FileMode.Create));

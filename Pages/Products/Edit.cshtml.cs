@@ -27,6 +27,7 @@ namespace Assignment2.Pages.Products
 
         [BindProperty]
         public Product Product { get; set; }
+        [BindProperty]
         public IFormFile Upload { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -59,7 +60,7 @@ namespace Assignment2.Pages.Products
 
             if (Upload != null)
             {
-                await UploadFile(Upload);
+                Product.ImageUrl = await UploadFile(Upload);
             }
             _context.Attach(Product).State = EntityState.Modified;
 
@@ -87,7 +88,7 @@ namespace Assignment2.Pages.Products
             return _context.Product.Any(e => e.ID == id);
         }
 
-        private async Task UploadFile(IFormFile file)
+        private async Task<string> UploadFile(IFormFile file)
         {
             string folder = "wwwroot/images/";
             folder += file.FileName;
@@ -96,7 +97,7 @@ namespace Assignment2.Pages.Products
                 var filePath = Path.Combine(_environment.ContentRootPath, folder);
                 await Upload.CopyToAsync(new FileStream(filePath, FileMode.Create));
             }
-            Product.ImageUrl = file.FileName;
+            return file.FileName;
         }
     }
 }
